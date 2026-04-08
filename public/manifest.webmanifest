@@ -1,0 +1,23 @@
+{
+	"name": "Target",
+	"short_name": "Target",
+	"icons": [
+		{
+			"src": "/target/assets/icons/web-app-manifest-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "/target/assets/icons/web-app-manifest-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	],
+	"id": "/target/",
+	"start_url": "/target/",
+	"display": "standalone",
+	"lang": "fr",
+	"scope": "/target/",
+	"theme_color": "#082046",
+	"background_color": "#082046"
+}
