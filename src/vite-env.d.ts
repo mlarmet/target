@@ -3,3 +3,7 @@
 
 declare const __BASE_URL__: string;
 declare const __APP_NAME__: string;
+declare const __BUILD_INFOS__: {
+	version: string;
+	date: date;
+};

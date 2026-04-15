@@ -1,0 +1,37 @@
+footer {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+
+	width: 100%;
+
+	padding: 12px;
+
+	background-color: var(--color-background-default);
+
+	&.reverse {
+		background-color: var(--color-background-variant);
+	}
+
+	#infos {
+		display: flex;
+
+		gap: 24px;
+
+		padding: 0 16px 12px 0;
+
+		p {
+			font-weight: 700;
+
+			&#author {
+				opacity: 75%;
+				text-decoration: underline;
+			}
+
+			&#build-date {
+				color: var(--color-cta-default);
+				opacity: 50%;
+			}
+		}
+	}
+}

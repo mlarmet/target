@@ -1,12 +1,9 @@
 main {
+	position: relative;
+
 	display: flex;
+	align-items: center;
 
-	height: 100%;
 	width: 100%;
-}
-
-main #right {
-	width: 50%;
-
-	background-color: lightblue;
+	height: 100%;
 }
