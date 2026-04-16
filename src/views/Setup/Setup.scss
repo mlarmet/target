@@ -1,3 +1,91 @@
 main#setup {
+	min-height: 0;
+
 	background-color: var(--color-background-default);
+
+	justify-content: center;
+
+	gap: 48px;
+
+	.title.main {
+		width: min-content;
+	}
+
+	#full-screen-alert {
+		pointer-events: none;
+
+		position: fixed;
+		top: -100%;
+		left: 0;
+		right: 0;
+		bottom: 0;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		font-size: 40px;
+		line-height: normal;
+
+		background-color: var(--color-others-danger);
+		color: var(--color-text-cta);
+
+		text-align: center;
+		z-index: 99;
+
+		transform: translateY(-100%);
+
+		transition: all 2000ms ease-out;
+
+		&.show {
+			top: 0;
+			transform: translateY(0);
+		}
+	}
+
+	#left {
+		flex: 1;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		gap: 48px;
+
+		height: 100%;
+
+		padding: 64px 48px;
+		max-width: 455px;
+	}
+
+	#right {
+		flex: 1;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		max-width: 650px;
+		max-height: 650px;
+
+		height: 100%;
+
+		img {
+			filter: drop-shadow(15px 15px 0 var(--color-background-variant));
+		}
+	}
+
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: 36px;
+
+		&,
+		.form-container:has(#players) {
+			min-height: 0;
+		}
+
+		#players {
+			overflow-y: auto;
+		}
+	}
 }
