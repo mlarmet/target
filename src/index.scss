@@ -78,6 +78,7 @@ body {
 	@media screen and (min-width: calc($ipad-width + 1px)) {
 		border-radius: 32px;
 		overflow: hidden;
+		border: 1px solid var(--color-others-border);
 	}
 }
 
@@ -125,6 +126,7 @@ p {
 	/* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 
+input,
 button {
 	// Reset default button
 	background: transparent;
@@ -135,8 +137,14 @@ button {
 	outline: none;
 	margin: 0;
 	padding: 0;
+}
 
+button {
 	cursor: pointer;
+}
+
+input {
+	cursor: text;
 }
 
 
@@ -154,6 +162,31 @@ button.btn {
 	background-color: var(--color-cta-default);
 	color: var(--color-text-cta);
 
+	transition: all 250ms ease-in-out;
+
+	&.secondary {
+		background-color: transparent;
+		border: 1px dashed transparent;
+
+		&:not(:hover) {
+			border-color: var(--color-cta-default);
+			color: var(--color-cta-default);
+		}
+	}
+
+	&.danger {
+		padding: 0;
+		background-color: transparent;
+		border: 1px solid var(--color-others-danger);
+		color: var(--color-others-danger);
+
+		&:hover,
+		&:active {
+			background-color: var(--color-others-danger);
+			color: var(--color-text-cta);
+		}
+	}
+
 	&:hover {
 		background-color: var(--color-cta-hover);
 	}
@@ -162,79 +195,108 @@ button.btn {
 		background-color: var(--color-cta-pressed);
 	}
 
-	&:disabled {
-		opacity: 50%;
-	}
-
 	&.icon {
-		position: absolute !important;
-		top: 0;
+		width: 38px;
+		height: 38px;
+	}
+}
 
-		display: flex;
-		align-items: center;
-		justify-content: center;
+.input,
+input.input {
+	font-family: "Space Grotesk", sans-serif;
+	font-size: 16px;
+	font-weight: 700;
 
-		width: 35px;
-		// 35px + 5px delta
-		height: 40px;
+	&,
+	&+label {
+		transition: all 250ms ease-in-out;
 	}
 
-	// &.primary,
-	// &.valid,
-	// &.alert {
-	// 	position: relative;
-	// 	z-index: 0;
+	&[type="radio"] {
+		// Only show label
+		display: none;
+	}
 
-	// 	color: var(--color-others-dark);
+	&:not([type="radio"]),
+	&+label {
+		// line height not works 
+		padding: 10px 12px;
+		border: 1px solid var(--color-others-border);
+		background-color: var(--color-background-variant);
+		border-radius: 8px;
+		color: var(--color-text-primary);
+	}
 
-	// 	$paddingV: calc(0.5rem + 5px);
-	// 	$paddingH: 1rem;
+	&+label {
+		text-align: center;
+		cursor: pointer;
+	}
 
-	// 	// Coutner bottom space - 2px = - 5px delta + 3px border
-	// 	padding: calc($paddingV - 2px) $paddingH calc($paddingV + 2px) $paddingH;
+	&:checked+label,
+	&:hover,
+	&:focus {
+		border-color: var(--color-cta-default);
+	}
 
-	// 	&:hover:not(:disabled) {
-	// 		padding-top: calc($paddingV + 3px);
-	// 		padding-bottom: calc($paddingV - 3px);
+	&:checked+label,
+	&:focus {
+		font-weight: 700;
+		color: var(--color-cta-default);
+	}
 
-	// 		&::before,
-	// 		&::after {
-	// 			top: 5px;
-	// 			bottom: 0;
-	// 		}
-	// 	}
+	&::placeholder {
+		color: var(--color-text-secondary);
+		font-weight: 400;
+	}
+}
 
-	// 	&::before,
-	// 	&::after {
-	// 		content: "";
-	// 		z-index: -1;
+.form-container,
+.form-col,
+.form-row {
+	display: flex;
+}
 
-	// 		position: absolute;
-	// 		left: 0;
-	// 		right: 0;
-	// 		top: 0;
-	// 	}
+.form-container {
+	flex-direction: column;
+	gap: 24px;
 
-	// 	&::after {
-	// 		bottom: 5px;
+	.form-title {
+		margin: 0;
 
-	// 		border: 3px var(--color-others-dark) solid;
-	// 		background-color: var(--color-primary-default);
-	// 	}
+		font-size: 16px;
+		font-weight: 700;
 
-	// 	&::before {
-	// 		bottom: 0;
+		text-transform: uppercase;
+	}
+}
 
-	// 		background-color: var(--color-others-dark);
-	// 	}
-	// }
+.form-validation {
+	font-size: 14px;
+	margin: -3px 0 3px 6px;
 
-	// &.valid::after {
-	// 	background-color: var(--color-others-valid);
-	// }
+	&.alert {
+		color: var(--color-others-danger);
+	}
 
-	// &.alert::after {
-	// 	background-color: var(--color-others-alert);
-	// }
+	&.warning {
+		color: var(--color-others-warning);
+	}
+}
 
+.form-col,
+.form-row {
+	gap: 12px;
+}
+
+.form-col {
+	flex-direction: column;
+}
+
+.form-row {
+	align-items: center;
+
+	&>input,
+	&>label {
+		flex: 1;
+	}
 }
