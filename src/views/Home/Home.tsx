@@ -3,9 +3,9 @@ import { useNavigate } from "react-router";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 
-import "./Home.scss";
-
 import dartboard from "@/assets/images/dartboard.svg";
+
+import "./Home.scss";
 
 export default function Home() {
 	const navigate = useNavigate();
