@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useGameStore } from "@/store/game.store";
 
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
@@ -15,15 +18,19 @@ interface PlayerError {
 const MAX_PLAYERS = 10;
 const GAME_MODES: GameMode[] = ["501", "301"];
 const NO_ERROR: PlayerError = { code: 0, text: "" };
+const NEW_PLAYER: PlayerData = { name: "", dartCount: 0, score: [] };
 
 export default function Setup() {
 	const [showFullAlert, setShowFullAlert] = useState(false);
-	const [mode, setMode] = useState<GameMode>("501");
-	const [players, setPlayers] = useState<string[]>(["", ""]);
+
+	const navigate = useNavigate();
+
+	const { mode, setMode, players, setPlayers } = useGameStore();
+
 	const [errors, setErrors] = useState<PlayerError[]>([]);
 
-	const validateAll = (players: string[], prevErrors: PlayerError[]): PlayerError[] => {
-		return players.map((p, i) => validatePlayer(p, prevErrors[i]));
+	const validateAll = (players: PlayerData[], prevErrors: PlayerError[]): PlayerError[] => {
+		return players.map((player, i) => validatePlayer(player.name, prevErrors[i]));
 	};
 
 	const validatePlayer = (name: string, prevError: PlayerError): PlayerError => {
@@ -39,14 +46,17 @@ export default function Setup() {
 
 			return { code: -2, text: "Nom interdit" };
 		}
-		if (trimmed.toLowerCase() === "anaelle") return { code: 1, text: "Anaelle ?" };
+		if (trimmed.toLowerCase() === "anaelle") return { code: 1, text: "Anaelle ?" }; // TODO : joke
+
+		// TODO : same name
+
 		return NO_ERROR;
 	};
 
 	const handleBlur = (index: number) => {
 		setErrors((prev) => {
 			const next = [...prev];
-			next[index] = validatePlayer(players[index], next[index]);
+			next[index] = validatePlayer(players[index].name, next[index]);
 			return next;
 		});
 	};
@@ -60,12 +70,14 @@ export default function Setup() {
 	};
 
 	const addPlayer = () => {
-		setPlayers((p) => [...p, ""]);
+		players.push(NEW_PLAYER);
+		setPlayers(players);
+
 		setErrors((e) => [...e, NO_ERROR]);
 	};
 
 	const updatePlayer = (index: number, value: string) => {
-		const next = players.map((name, i) => (i === index ? value : name));
+		const next = players.map((player, i) => ({ ...player, name: i === index ? value : player.name }));
 		setPlayers(next);
 	};
 
@@ -87,7 +99,9 @@ export default function Setup() {
 			return;
 		}
 		setErrors([]);
-		console.log("Start game", { mode, players: players.map((p) => p.trim()) });
+
+		// Start game
+		navigate("/game");
 	};
 
 	useEffect(() => {
@@ -131,39 +145,36 @@ export default function Setup() {
 						<div className="form-container">
 							<h3 className="form-title">Joueurs</h3>
 							<div id="players" className="form-col">
-								{players.map((name, i) => {
-									const error = errors?.[i];
-									return (
-										<React.Fragment key={i}>
-											<div className="form-row">
-												<input
-													type="text"
-													name={`player-${i + 1}`}
-													id={`player-${i + 1}`}
-													value={name}
-													placeholder={`Joueur ${i + 1}`}
-													className="input"
-													onChange={(e) => updatePlayer(i, e.target.value)}
-													onBlur={() => handleBlur(i)}
-													onFocus={() => handleFocus(i)}
-												/>
-												{i >= 2 && (
-													<button
-														type="button"
-														className="btn danger icon"
-														onClick={() => removePlayer(i)}
-														aria-label={`Supprimer joueur ${i + 1}`}
-													>
-														✕
-													</button>
-												)}
-											</div>
-											{error && error.code !== 0 && (
-												<div className={`form-validation ${error.code < 0 ? "alert" : "warning"}`}>{error.text}</div>
+								{players.map((player, i) => (
+									<React.Fragment key={i}>
+										<div className="form-row">
+											<input
+												type="text"
+												name={`player-${i + 1}`}
+												id={`player-${i + 1}`}
+												value={player.name}
+												placeholder={`Joueur ${i + 1}`}
+												className="input"
+												onChange={(e) => updatePlayer(i, e.target.value)}
+												onBlur={() => handleBlur(i)}
+												onFocus={() => handleFocus(i)}
+											/>
+											{i >= 2 && (
+												<button
+													type="button"
+													className="btn danger icon"
+													onClick={() => removePlayer(i)}
+													aria-label={`Supprimer joueur ${i + 1}`}
+												>
+													✕
+												</button>
 											)}
-										</React.Fragment>
-									);
-								})}
+										</div>
+										{errors?.[i] && errors?.[i].code !== 0 && (
+											<div className={`form-validation ${errors?.[i].code < 0 ? "alert" : "warning"}`}>{errors?.[i].text}</div>
+										)}
+									</React.Fragment>
+								))}
 								{players.length < MAX_PLAYERS && (
 									<button type="button" className="btn secondary" onClick={addPlayer}>
 										＋ Ajouter un joueur

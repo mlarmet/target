@@ -1,8 +1,11 @@
-import { useEffect } from "react";
-import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
-import Home from "@/views/Home/Home";
-import Setup from "@/views/Setup/Setup";
+import Loading from "@/views/Loading/Loading";
+
+const Home = lazy(() => import("./views/Home/Home"));
+const Setup = lazy(() => import("./views/Setup/Setup"));
+const Game = lazy(() => import("./views/Game/Game"));
 
 import "./App.scss";
 
@@ -13,12 +16,13 @@ const App = () => {
 
 	return (
 		<Router basename={__BASE_URL__}>
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/setup" element={<Setup />} />
-				{/* Fallback route to home */}
-				<Route path="*" element={<Navigate to="/" replace />} />
-			</Routes>
+			<Suspense fallback={<Loading />}>
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/setup" element={<Setup />} />
+					<Route path="/game" element={<Game />} />
+				</Routes>
+			</Suspense>
 		</Router>
 	);
 };

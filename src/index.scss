@@ -250,6 +250,55 @@ input.input {
 	}
 }
 
+.turn-value {
+	text-align: center;
+
+	padding: 18px;
+
+	border: 1px solid var(--color-others-border);
+	border-radius: 8px;
+	background-color: var(--color-background-variant);
+	color: var(--color-text-primary);
+
+	&.current {
+		border-color: var(--color-cta-default);
+		color: var(--color-cta-default);
+	}
+}
+
+.stat {
+	position: relative;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	width: 100%;
+	padding: 3px 12px 3px 18px;
+
+	border-radius: 8px;
+
+	overflow: hidden;
+
+	&::before {
+		content: "";
+
+		position: absolute;
+		top: 0;
+		left: 0;
+
+		background-color: var(--color-cta-default);
+		width: 4px;
+		height: 100%;
+	}
+
+	.value {
+		font-size: 36px;
+		line-height: 34px;
+	}
+
+}
+
 .form-container,
 .form-col,
 .form-row {
