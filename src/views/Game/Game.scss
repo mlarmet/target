@@ -24,9 +24,13 @@ main#game {
 			display: flex;
 			justify-content: space-between;
 
+			.main {
+				margin-top: -15px;
+			}
+
 			#counter {
 				align-items: flex-end;
-				gap: 12px;
+				gap: 6px;
 			}
 		}
 

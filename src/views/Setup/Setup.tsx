@@ -18,7 +18,7 @@ interface PlayerError {
 const MAX_PLAYERS = 10;
 const GAME_MODES: GameMode[] = ["501", "301"];
 const NO_ERROR: PlayerError = { code: 0, text: "" };
-const NEW_PLAYER: PlayerData = { name: "", dartCount: 0, score: [] };
+const NEW_PLAYER: PlayerData = { name: "", score: [] };
 
 export default function Setup() {
 	const [showFullAlert, setShowFullAlert] = useState(false);

@@ -4,6 +4,10 @@ type GameMode = "501" | "301";
 
 type PlayerData = {
 	name: string;
-	dartCount: number;
-	score: number[];
+	score: Record<number, Segment[]>;
+};
+
+type Segment = {
+	value: number;
+	multiplier: number;
 };
