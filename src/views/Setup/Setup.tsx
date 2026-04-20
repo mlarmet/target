@@ -166,7 +166,7 @@ export default function Setup() {
 													onClick={() => removePlayer(i)}
 													aria-label={`Supprimer joueur ${i + 1}`}
 												>
-													✕
+													<span className="material-symbols-outlined">close</span>
 												</button>
 											)}
 										</div>
@@ -177,7 +177,7 @@ export default function Setup() {
 								))}
 								{players.length < MAX_PLAYERS && (
 									<button type="button" className="btn secondary" onClick={addPlayer}>
-										＋ Ajouter un joueur
+										<span className="material-symbols-outlined">add</span> Ajouter un joueur
 									</button>
 								)}
 							</div>

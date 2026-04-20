@@ -1,17 +1,30 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import DartBoard from "@/game/DartBoard";
 
-import "./DartBoard.scss";
+import { useGameStore } from "@/store/game.store";
+import "./DartBoardComp.scss";
 
-export default function DartBoardComponent() {
+export default function DartBoardComp() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const [dashBoard, setDashBoard] = useState<DartBoard | null>(null);
+
+	const currentPlayer = useGameStore((state) => state.currentPlayer);
+
+	useEffect(() => {
+		if (!canvasRef.current || !dashBoard) return;
+
+		// Reset selected segment on player change and redraw
+		dashBoard.redraw();
+	}, [currentPlayer]);
 
 	useEffect(() => {
 		if (!canvasRef.current) return;
 
 		const dashBoard = new DartBoard();
 		dashBoard.init(canvasRef.current);
+
+		setDashBoard(dashBoard);
 
 		window.addEventListener("resize", dashBoard.resize);
 		window.addEventListener("scroll", dashBoard.resize);

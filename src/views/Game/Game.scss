@@ -13,7 +13,7 @@ main#game {
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
-		gap: 48px;
+		gap: 36px;
 
 		height: 100%;
 
@@ -34,10 +34,25 @@ main#game {
 			}
 		}
 
+		#turns-title {
+			align-items: flex-start;
+			justify-content: space-between;
+		}
+
 		#turns {
 			.turn-value {
 				flex: 1;
 			}
+		}
+
+		#players,
+		#players-list {
+			min-height: 0;
+			height: 100%;
+		}
+
+		#players-list {
+			overflow: auto;
 		}
 	}
 

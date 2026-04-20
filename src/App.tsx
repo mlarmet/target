@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import Loading from "@/views/Loading/Loading";
 
@@ -21,6 +21,8 @@ const App = () => {
 					<Route path="/" element={<Home />} />
 					<Route path="/setup" element={<Setup />} />
 					<Route path="/game" element={<Game />} />
+					{/* Fallback => go to home */}
+					<Route path="*" element={<Navigate replace to="/" />} />
 				</Routes>
 			</Suspense>
 		</Router>

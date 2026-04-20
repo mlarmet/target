@@ -1,3 +1,5 @@
+import { GameEngine } from "./GameEngine";
+
 const SEGMENTS = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5];
 
 const RING_SIZE = 0.11;
@@ -35,7 +37,7 @@ export default class DartBoard {
 
 	constructor() {
 		this.size = 1;
-		this.selectedSegment = { value: 20, multiplier: 1 /*x: 180, y: 210*/ };
+		this.selectedSegment = { value: -1, multiplier: 1 };
 
 		this.colors = {
 			selected: "",
@@ -93,6 +95,8 @@ export default class DartBoard {
 
 		this.selectedSegment = res; //{ value: res.value, multiplier: res.multiplier, x: nx, y: ny };
 
+		GameEngine.shot(res);
+
 		this.draw();
 	};
 
@@ -107,17 +111,14 @@ export default class DartBoard {
 		if (angle < 0) angle += Math.PI * 2;
 
 		const segmentIndex = Math.floor(angle / angleStep) % SEGMENTS.length;
-		let value = SEGMENTS[segmentIndex];
+		const value = SEGMENTS[segmentIndex];
 		let multiplier: 1 | 1.5 | 2 | 3 = 1;
 
-		if (r >= rTripleOuter && r <= rDoubleInner) multiplier = 1.5;
-		else if (r <= rBullInner) {
-			value = 25;
-			multiplier = 2;
-		} else if (r <= rBullOuter) {
-			value = 25;
-			multiplier = 1;
-		} else if (r >= rTripleInner && r <= rTripleOuter) multiplier = 3;
+		if (r >= rDoubleOuter) return { value: 0, multiplier: 1 };
+		else if (r >= rTripleOuter && r <= rDoubleInner) multiplier = 1.5;
+		else if (r <= rBullInner) return { value: 25, multiplier: 2 };
+		else if (r <= rBullOuter) return { value: 25, multiplier: 1 };
+		else if (r >= rTripleInner && r <= rTripleOuter) multiplier = 3;
 		else if (r >= rDoubleInner && r <= rDoubleOuter) multiplier = 2;
 
 		return { value, multiplier };
@@ -210,6 +211,11 @@ export default class DartBoard {
 
 			rNumberCenter: radius * BOARD_RATIO.numberRadius,
 		};
+	}
+
+	redraw() {
+		this.selectedSegment = { value: -1, multiplier: 1 };
+		this.draw();
 	}
 
 	draw() {

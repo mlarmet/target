@@ -1,3 +1,6 @@
+// Utilities
+@use "./utils/variables";
+
 :root {
 	/* CTA  */
 	--color-cta-default: #7DDE9AFF;
@@ -58,12 +61,8 @@ body {
 #root {
 	flex: 1;
 
-
-	$ipad-width : 1366px;
-	$ipad-height: 1024px;
-
-	max-width: $ipad-width;
-	max-height: $ipad-height;
+	max-width: variables.$ipad-width;
+	max-height: variables.$ipad-height;
 
 	display: flex;
 	flex-direction: column;
@@ -71,7 +70,7 @@ body {
 	justify-content: center;
 	align-items: center;
 
-	@media screen and (min-width: calc($ipad-width + 1px)) {
+	@media screen and (min-width: calc(variables.$ipad-width + 1px)) {
 		border-radius: 32px;
 		overflow: hidden;
 		border: 1px solid var(--color-others-border);
@@ -173,6 +172,15 @@ button.btn {
 		&:not(:hover) {
 			border-color: var(--color-cta-default);
 			color: var(--color-cta-default);
+		}
+	}
+
+	&.tertiary {
+		background-color: transparent;
+		border: 1px solid transparent;
+
+		&:not(:hover) {
+			color: var(--color-text-primary);
 		}
 	}
 
