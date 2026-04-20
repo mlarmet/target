@@ -1,7 +1,40 @@
-main#home {
-	gap: 128px;
+// Utilities
+@use "../../utils/variables";
 
+main#home {
 	background: linear-gradient(var(--color-background-variant) 0%, var(--color-background-default) 100%);
+	padding: 24px;
+
+	#container {
+		display: flex;
+		align-items: center;
+
+		width: 100%;
+		gap: 128px;
+	}
+
+	@media screen and (max-width: 1200px) {
+		#container {
+			gap: 64px;
+		}
+	}
+
+	@media screen and (max-width: 950px) {
+		#container {
+			flex-direction: column;
+			gap: 64px;
+
+			margin: auto 0;
+		}
+
+		#left {
+			flex: 0 !important;
+		}
+
+		#right {
+			display: none !important;
+		}
+	}
 
 	#left,
 	#right,
@@ -11,21 +44,18 @@ main#home {
 		flex-direction: column;
 	}
 
-	#left,
-	#right {
-		flex: 1;
-		align-items: center;
-	}
-
 	#left {
+		flex: 1;
 		align-items: flex-end;
 	}
 
 	#right {
+		flex: 1;
 		align-items: flex-start;
 	}
 
 	#box {
+		z-index: 2;
 		gap: 48px;
 
 		border-radius: 12px;
@@ -42,7 +72,17 @@ main#home {
 	}
 
 	#devise {
+		z-index: 2;
 		gap: 24px;
+		padding: 24px;
+
+		@media screen and (max-width: 650px) {
+			border-radius: 12px;
+			border: 1px solid var(--color-others-border);
+
+			background-color: var(--color-background-default);
+			padding-top: 18px;
+		}
 
 		.title {
 			&:nth-child(1) {
@@ -66,6 +106,14 @@ main#home {
 
 		opacity: 50%;
 		transform: translate(50%, -50%);
+
+		height: 80%;
+		max-height: 720px;
+
+		@media screen and (max-width: calc(variables.$ipad-width + 1px)) {
+			position: fixed !important;
+			height: 62%;
+		}
 	}
 
 }

@@ -60,5 +60,6 @@ export default defineConfig({
 		__BASE_URL__: JSON.stringify(baseUrl),
 		__APP_NAME__: JSON.stringify("🎯 Target"),
 		__BUILD_INFOS__: JSON.stringify(build),
+		__MAX_LENGTH__: JSON.stringify({ name: 20 }),
 	},
 });

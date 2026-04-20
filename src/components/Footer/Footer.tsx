@@ -19,14 +19,16 @@ export default function Footer({ reverse }: FooterProps) {
 			minute: "2-digit",
 			second: "2-digit",
 			hour12: false,
-		})
-			.format(date)
-			.replace(",", " -");
+		}).format(date);
 	};
 	return (
 		<footer className={reverse ? "reverse" : ""}>
 			<div id="infos">
-				<p id="author">Maxence LARMET</p>
+				<p id="author">
+					<a className="link" target="_blank" href="https://mlarmet.github.io/">
+						Maxence LARMET
+					</a>
+				</p>
 				<p id="build-date">
 					v{__BUILD_INFOS__.version} - {formatDate(__BUILD_INFOS__.date)}
 				</p>
