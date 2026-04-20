@@ -18,6 +18,9 @@
 	img {
 		animation: rotation 2s infinite linear;
 
+		max-width: 80%;
+		max-height: 80%;
+
 		@keyframes rotation {
 			0% {
 				transform: rotate(0deg);

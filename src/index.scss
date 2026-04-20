@@ -75,6 +75,10 @@ body {
 		overflow: hidden;
 		border: 1px solid var(--color-others-border);
 	}
+
+	@media screen and (max-height: calc(variables.$ipad-height + 1px)) {
+		min-height: 100dvh;
+	}
 }
 
 .title {
@@ -213,6 +217,14 @@ button.btn {
 	&:not(.icon)>span {
 		line-height: 11px;
 		margin-right: 6px;
+	}
+}
+
+.link {
+	color: var(--color-text-primary);
+	
+	&:hover {
+		color: var(--color-text-secondary);
 	}
 }
 

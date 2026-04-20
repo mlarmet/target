@@ -119,9 +119,9 @@ export default function Setup() {
 					<p>J'ai dit non, c'est moi qui décide. D'accord ?</p>
 				</div>
 				<div id="left">
-					<h1 className="title main">Nouvelle partie</h1>
-
 					<form action={startGame}>
+						<h1 className="title main">Nouvelle partie</h1>
+
 						<div className="form-container">
 							<h3 className="form-title">Mode de jeu</h3>
 							<div id="mode" className="form-row">
@@ -155,6 +155,7 @@ export default function Setup() {
 												value={player.name}
 												placeholder={`Joueur ${i + 1}`}
 												className="input"
+												maxLength={__MAX_LENGTH__.name}
 												onChange={(e) => updatePlayer(i, e.target.value)}
 												onBlur={() => handleBlur(i)}
 												onFocus={() => handleFocus(i)}
@@ -189,9 +190,7 @@ export default function Setup() {
 					</form>
 				</div>
 
-				<div id="right">
-					<img id="decoration" src={dartboard} alt="decoration" />
-				</div>
+				<img id="decoration" src={dartboard} alt="decoration" />
 			</main>
 			<Footer />
 		</>
