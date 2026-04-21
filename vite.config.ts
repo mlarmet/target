@@ -1,6 +1,7 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+import { resolve } from "path";
 
 // https://vitejs.dev/config/
 
@@ -14,6 +15,12 @@ const build = {
 export default defineConfig({
 	base: baseUrl,
 	build: {
+		rollupOptions: {
+			input: {
+				main: resolve(__dirname, "index.html"),
+				404: resolve(__dirname, "404.html"),
+			},
+		},
 		chunkSizeWarningLimit: 1024,
 	},
 
