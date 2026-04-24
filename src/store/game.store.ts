@@ -6,6 +6,8 @@ type GameState = {
 
 	turn: number;
 
+	status: GameStatus;
+
 	currentPlayer: string;
 
 	setCurrentPlayer: (name: string) => void;
@@ -14,6 +16,8 @@ type GameState = {
 	setPlayers: (players: PlayerData[]) => void;
 
 	setTurn: (turn: number) => void;
+
+	setGameStatus: (status: GameStatus) => void;
 };
 
 const NEW_PLAYER: PlayerData = {
@@ -33,14 +37,18 @@ export const useGameStore = create<GameState>((set) => ({
 	mode: "501",
 	players: [NEW_PLAYER, NEW_PLAYER_2, NEW_PLAYER_3],
 
-	currentPlayer: "Maxence1",
-
 	turn: 1,
 
+	status: "idle",
+	
+	currentPlayer: "Maxence1",
+	
 	setCurrentPlayer: (name: string) => set({ currentPlayer: name }),
 
 	setMode: (mode: GameMode) => set({ mode }),
 	setPlayers: (players: PlayerData[]) => set({ players }),
 
 	setTurn: (turn: number) => set({ turn }),
+
+	setGameStatus: (status: GameStatus) => set({ status }),
 }));

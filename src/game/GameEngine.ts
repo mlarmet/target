@@ -18,11 +18,15 @@ export class GameEngine {
 		// First player to play => new turn
 		if (nextPlayer === gameState.players[0].name) gameState.setTurn(gameState.turn + 1);
 
-		gameState.setCurrentPlayer(nextPlayer);
+		gameState.setCurrentPlayer(nextPlayer);	
+		gameState.setGameStatus("idle");
 	}
 
 	static shot(segment: Segment) {
 		const gameState = useGameStore.getState();
+
+		// Prevent shot when waiting to change player
+		if(gameState.status !== "idle") return;
 
 		const updatedPlayers = gameState.players.map((p) => {
 			if (p.name !== gameState.currentPlayer) return p;
@@ -31,7 +35,8 @@ export class GameEngine {
 			playerScore.push(segment);
 
 			if (playerScore.length === 3) {
-				setTimeout(() => GameEngine.nextPlayer(), 1500);
+				gameState.setGameStatus("wait");
+				setTimeout(() => GameEngine.nextPlayer(), 1250);
 			}
 
 			return {

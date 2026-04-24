@@ -1,3 +1,5 @@
+import { useGameStore } from "@/store/game.store";
+
 import { GameEngine } from "./GameEngine";
 
 const SEGMENTS = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5];
@@ -63,10 +65,10 @@ export default class DartBoard {
 
 		this.canvas.addEventListener("click", this.handleClick);
 
-		this.SetColors();
+		this.setColors();
 	}
 
-	SetColors() {
+	setColors() {
 		const root = document.documentElement;
 		const rootStyle = getComputedStyle(root);
 
@@ -78,6 +80,11 @@ export default class DartBoard {
 
 	handleClick = (e: MouseEvent) => {
 		if (!this.canvas || !this.ctx) return;
+
+		const gameState = useGameStore.getState();
+		
+		// Prevent shot when waiting to change player
+		if(gameState.status !== "idle") return;
 
 		const rect = this.canvas.getBoundingClientRect();
 		const x = e.clientX - rect.left;
