@@ -3,23 +3,23 @@
 
 :root {
 	/* CTA  */
-	--color-cta-default: #7DDE9AFF;
-	--color-cta-hover: #5CC97AFF;
-	--color-cta-pressed: #4CAF7DFF;
+	--color-cta-default: #7dde9aff;
+	--color-cta-hover: #5cc97aff;
+	--color-cta-pressed: #4caf7dff;
 
 	/* Background */
-	--color-background-default: #0A1A10FF;
-	--color-background-variant: #1E3D2AFF;
+	--color-background-default: #0a1a10ff;
+	--color-background-variant: #1e3d2aff;
 
 	/* Others */
-	--color-others-danger: #FF6B6BFF;
-	--color-others-warning: #FFB347FF;
-	--color-others-border: #2A5C3AFF;
+	--color-others-danger: #ff6b6bff;
+	--color-others-warning: #ffb347ff;
+	--color-others-border: #2a5c3aff;
 
 	/* Text */
-	--color-text-primary: #E8F5ECFF;
-	--color-text-secondary: #C5DFC9FF;
-	--color-text-cta: #0D2318FF;
+	--color-text-primary: #e8f5ecff;
+	--color-text-secondary: #c5dfc9ff;
+	--color-text-cta: #0d2318ff;
 
 	/* Dart Board */
 	--color-tiles-red: #ff3d3d;
@@ -28,7 +28,6 @@
 	--color-tiles-black: #000;
 	--color-tiles-selected: #284cda;
 	--color-tiles-text: #fff;
-
 }
 
 *,
@@ -55,7 +54,6 @@ body {
 
 	background-color: var(--color-text-cta);
 	color: var(--color-text-primary);
-
 }
 
 #root {
@@ -106,7 +104,6 @@ body {
 	}
 }
 
-
 p {
 	margin: 0;
 }
@@ -146,7 +143,6 @@ button {
 input {
 	cursor: text;
 }
-
 
 .btn,
 button.btn {
@@ -220,7 +216,7 @@ button.btn {
 		height: 38px;
 	}
 
-	&:not(.icon)>span {
+	&:not(.icon) > span {
 		line-height: 11px;
 		margin-right: 6px;
 	}
@@ -241,7 +237,7 @@ input.input {
 	font-weight: 700;
 
 	&,
-	&+label {
+	& + label {
 		transition: all 250ms ease-in-out;
 	}
 
@@ -252,12 +248,12 @@ input.input {
 	}
 
 	&[type="checkbox"] {
-		&:checked+label .box {
+		&:checked + label .box {
 			background-color: var(--color-cta-default);
 			border-color: var(--color-cta-default);
 		}
 
-		&+label {
+		& + label {
 			display: flex;
 			align-items: center;
 			gap: 12px;
@@ -280,12 +276,11 @@ input.input {
 				border-radius: 6px;
 			}
 		}
-
 	}
 
 	&:not([type="radio"]),
-	&:not([type="checkbox"])+label {
-		// line height not works 
+	&:not([type="checkbox"]) + label {
+		// line height not works
 		padding: 10px 12px;
 		border: 1px solid var(--color-others-border);
 		background-color: var(--color-background-variant);
@@ -293,18 +288,18 @@ input.input {
 		color: var(--color-text-primary);
 	}
 
-	&+label {
+	& + label {
 		text-align: center;
 		cursor: pointer;
 	}
 
-	&[type="radio"]:checked+label,
+	&[type="radio"]:checked + label,
 	&:hover,
 	&:focus {
 		border-color: var(--color-cta-default);
 	}
 
-	&[type="radio"]:checked+label,
+	&[type="radio"]:checked + label,
 	&:focus {
 		font-weight: 700;
 		color: var(--color-cta-default);
@@ -332,39 +327,6 @@ input.input {
 	}
 }
 
-.stat {
-	position: relative;
-
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-
-	width: 100%;
-	padding: 3px 12px 3px 18px;
-
-	border-radius: 8px;
-
-	overflow: hidden;
-
-	&::before {
-		content: "";
-
-		position: absolute;
-		top: 0;
-		left: 0;
-
-		background-color: var(--color-cta-default);
-		width: 4px;
-		height: 100%;
-	}
-
-	.value {
-		font-size: 36px;
-		line-height: 34px;
-	}
-
-}
-
 .form-container,
 .form-col,
 .form-row {
@@ -374,15 +336,15 @@ input.input {
 .form-container {
 	flex-direction: column;
 	gap: 24px;
+}
 
-	.form-title {
-		margin: 0;
+.form-title {
+	margin: 0;
 
-		font-size: 16px;
-		font-weight: 700;
+	font-size: 16px;
+	font-weight: 700;
 
-		text-transform: uppercase;
-	}
+	text-transform: uppercase;
 }
 
 .form-validation {
@@ -410,8 +372,22 @@ input.input {
 .form-row {
 	align-items: center;
 
-	&>input,
-	&>label {
+	& > input,
+	& > label {
 		flex: 1;
 	}
+}
+
+.popup {
+	position: fixed;
+	z-index: 99;
+	inset: 0;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 24px;
+
+	background-color: rgba(0, 0, 0, 0.5);
 }

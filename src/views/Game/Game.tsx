@@ -1,3 +1,4 @@
+import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, LineElement, PointElement, Tooltip } from "chart.js";
 import { useEffect, useState } from "react";
 import { useBlocker, useNavigate } from "react-router-dom";
 
@@ -7,17 +8,10 @@ import DartBoardComp from "@/components/DartBoard/DartBoardComp";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import PlayerCard from "@/components/PlayerCard/PlayerCard";
+import Stats from "@/components/Stats/Stats";
 
 import { GameEngine } from "@/game/GameEngine";
-import {
-	getCurrentPlayerAverageShot,
-	getCurrentPlayerBestShot,
-	getCurrentPlayerLastShot,
-	getCurrentPlayerShots,
-	getCurrentPlayerShotsCount,
-	getPlayerRemainingScore,
-	getShotText,
-} from "@/utils/score";
+import { getPlayerRemainingScore, getPlayerShots, getPlayerShotsCount, getShotText } from "@/utils/score";
 
 // import dartboard from "@/assets/images/dartboard.svg";
 
@@ -31,7 +25,7 @@ export default function Game() {
 	const [started, setStarted] = useState(false);
 
 	const getShotIndex = () => {
-		const shots: Record<number, Segment | null> = getCurrentPlayerShots();
+		const shots: Record<number, Segment | null> = getPlayerShots(currentPlayer?.name);
 
 		if (!shots[0]) return 0;
 		if (!shots[1]) return 1;
@@ -59,6 +53,16 @@ export default function Game() {
 			setStarted(true);
 		}
 
+		ChartJS.register(
+			CategoryScale, // axe X (labels)
+			LinearScale, // axe Y (valeurs)
+			BarElement, // bar chart
+			LineElement, // ligne
+			PointElement, // points ligne
+			Tooltip, // hover tooltip
+			Legend,
+		);
+
 		const handler = (e: BeforeUnloadEvent) => {
 			if (started) {
 				e.preventDefault();
@@ -75,6 +79,7 @@ export default function Game() {
 
 	return (
 		<>
+			<Stats />
 			<Header reverse />
 			<main id="game">
 				<div id="right">
@@ -90,7 +95,7 @@ export default function Game() {
 							</button>
 
 							<div id="counter" className="form-col">
-								<h2 className="title secondary">Shots {getCurrentPlayerShotsCount()}</h2>
+								<h2 className="title secondary">Shots {getPlayerShotsCount(currentPlayer?.name)}</h2>
 								<p>Tour {turn}</p>
 							</div>
 						</div>
@@ -106,24 +111,24 @@ export default function Game() {
 						</div>
 					</div>
 
-					<div id="stats" className="form-container">
+					{/* <div id="stats" className="form-container">
 						<h3 className="form-title">Stats</h3>
 
 						<div className="form-row">
 							<div className="stat">
 								<p className="name">Last</p>
-								<h3 className="title main value">{getCurrentPlayerLastShot()}</h3>
+								<h3 className="title main value">{getPlayerLastShot(currentPlayer?.name)}</h3>
 							</div>
 							<div className="stat">
 								<p className="name">Avg.</p>
-								<h3 className="title main value">{(getCurrentPlayerAverageShot() || 0).toFixed(1)}</h3>
+								<h3 className="title main value">{(getPlayerAverageShot(currentPlayer?.name) || 0).toFixed(1)}</h3>
 							</div>
 							<div className="stat">
 								<p className="name">Best</p>
-								<h3 className="title main value">{getCurrentPlayerBestShot()}</h3>
+								<h3 className="title main value">{getPlayerBestShot(currentPlayer?.name)}</h3>
 							</div>
 						</div>
-					</div>
+					</div> */}
 
 					<div id="players" className="form-container">
 						<h3 className="form-title">Joueurs</h3>

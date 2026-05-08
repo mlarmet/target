@@ -4,7 +4,9 @@ const getCurrentPlayer = () => {
 	return useGameStore.getState().players.find((p) => p.name === useGameStore.getState().currentPlayer?.name);
 };
 
-export const getPlayerScore = (name: string) => {
+export const getPlayerScore = (name?: string) => {
+	if (!name) return 0;
+
 	const gameState = useGameStore.getState();
 
 	const player = gameState.players.find((p) => p.name === name);
@@ -24,12 +26,16 @@ export const getPlayerScore = (name: string) => {
 	return score;
 };
 
-export const getPlayerRemainingScore = (name: string) => {
+export const getPlayerRemainingScore = (name?: string) => {
 	return useGameStore.getState().mode - getPlayerScore(name);
 };
 
-export const getCurrentPlayerLastShot = () => {
-	const player = getCurrentPlayer();
+export const getPlayerLastShot = (name?: string) => {
+	if (!name) return 0;
+
+	const gameState = useGameStore.getState();
+
+	const player = gameState.players.find((p) => p.name === name);
 	if (!player) return 0;
 
 	const key = useGameStore.getState().turn - 2;
@@ -40,8 +46,36 @@ export const getCurrentPlayerLastShot = () => {
 	return player.score[key].reduce((acc, shot) => acc + shot.value * Math.floor(shot.multiplier), 0);
 };
 
-export const getCurrentPlayerAverageShot = () => {
-	const player = getCurrentPlayer();
+export const getPlayerMissPercent = (name?: string) => {
+	if (!name) return 0;
+
+	const gameState = useGameStore.getState();
+
+	const player = gameState.players.find((p) => p.name === name);
+	if (!player) return 0;
+
+	const shotsCount = getPlayerShotsCount(player.name);
+
+	let missCount = 0;
+	for (let i = 0; i < Object.keys(player.score).length; i++) {
+		if (!player.score[i] || player.score[i].length === 0) continue;
+
+		for (const shot of player.score[i]) {
+			if (shot.value === 0) missCount++;
+		}
+	}
+
+	if (missCount <= 0 || shotsCount <= 0) return 0;
+
+	return (missCount / shotsCount) * 100;
+};
+
+export const getPlayerAverageShot = (name?: string) => {
+	if (!name) return 0;
+
+	const gameState = useGameStore.getState();
+
+	const player = gameState.players.find((p) => p.name === name);
 	if (!player) return 0;
 
 	const allScore = [];
@@ -62,8 +96,12 @@ export const getCurrentPlayerAverageShot = () => {
 	return allScore.reduce((acc, shot) => acc + shot, 0) / allScore.length;
 };
 
-export const getCurrentPlayerBestShot = () => {
-	const player = getCurrentPlayer();
+export const getPlayerBestShot = (name?: string) => {
+	if (!name) return 0;
+
+	const gameState = useGameStore.getState();
+
+	const player = gameState.players.find((p) => p.name === name);
 	if (!player) return 0;
 
 	const allScore = [];
@@ -80,8 +118,12 @@ export const getCurrentPlayerBestShot = () => {
 	return Math.max(...allScore);
 };
 
-export const getCurrentPlayerShotsCount = () => {
-	const player = getCurrentPlayer();
+export const getPlayerShotsCount = (name?: string) => {
+	if (!name) return 0;
+
+	const gameState = useGameStore.getState();
+
+	const player = gameState.players.find((p) => p.name === name);
 	if (!player) return 0;
 
 	let totalShot = 0;
@@ -92,20 +134,14 @@ export const getCurrentPlayerShotsCount = () => {
 	return totalShot;
 };
 
-export const getCurrentPlayerShots = () => {
-	const player = getCurrentPlayer();
-
-	if (!player)
+export const getPlayerShots = (name?: string) => {
+	if (!name)
 		return {
 			0: null,
 			1: null,
 			2: null,
 		};
 
-	return getPlayerShots(player.name);
-};
-
-export const getPlayerShots = (name: string) => {
 	const player = useGameStore.getState().players.find((p) => p.name === name);
 
 	if (!player)
@@ -133,7 +169,10 @@ export const getPlayerShots = (name: string) => {
 };
 
 export const getShotText = (count: number) => {
-	const shots: Record<number, Segment | null> = getCurrentPlayerShots();
+	const player = getCurrentPlayer();
+	if (!player) return "?";
+
+	const shots: Record<number, Segment | null> = getPlayerShots(player.name);
 	const shot = shots[count];
 
 	// No shot

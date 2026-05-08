@@ -1,19 +1,30 @@
 .player-card {
-	padding: 16px 24px 16px 18px;
+	padding: 7px 24px 7px 18px;
 
 	border: 1px solid var(--color-others-border);
 	border-radius: 8px;
 	background-color: var(--color-background-variant);
 	color: var(--color-text-primary);
 
-	display: flex;
+	display: grid;
 	align-items: center;
-	justify-content: space-between;
+	grid-template-rows: 1fr;
+	grid-template-columns: 1fr auto auto;
+
+	gap: 16px;
 
 	.name {
 		display: flex;
 		align-items: center;
 		gap: 12px;
+	}
+
+	.btn {
+		justify-self: center;
+	}
+
+	.title {
+		justify-self: end;
 	}
 
 	.circle {
@@ -23,12 +34,25 @@
 		border-radius: 50%;
 	}
 
+	.player-score {
+		width: 41px;
+	}
+
+	&.end {
+		opacity: 0.5;
+	}
 
 	&.current {
-		padding: 24px 24px 24px 18px;
+		font-weight: 700;
 
 		border-color: var(--color-cta-default);
 		color: var(--color-cta-default);
+
+		.btn.tertiary {
+			&:not(:hover) {
+				color: var(--color-cta-default);
+			}
+		}
 
 		.circle {
 			background-color: var(--color-cta-default);

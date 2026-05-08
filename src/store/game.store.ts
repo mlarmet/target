@@ -8,13 +8,15 @@ type GameState = {
 
 	status: GameStatus;
 
+	playerDetails: PlayerData | null;
 	currentPlayer: PlayerData | null;
 
 	history: GameSnapshot[];
 	pushHistory: () => void;
 	undo: () => void;
 
-	setCurrentPlayer: (player: PlayerData) => void;
+	setCurrentPlayer: (player: PlayerData | null) => void;
+	showPlayerDetails: (player: PlayerData | null) => void;
 
 	setMode: (mode: GameMode) => void;
 	setPlayers: (players: PlayerData[]) => void;
@@ -38,6 +40,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
 	status: "idle",
 
+	playerDetails: null,
 	currentPlayer: null,
 
 	history: [],
@@ -62,7 +65,9 @@ export const useGameStore = create<GameState>((set, get) => ({
 		const prev = history[history.length - 1];
 		set({ ...prev, history: history.slice(0, -1) } as GameState);
 	},
-	setCurrentPlayer: (player: PlayerData) => set({ currentPlayer: player }),
+
+	showPlayerDetails: (player: PlayerData | null) => set({ playerDetails: player }),
+	setCurrentPlayer: (player: PlayerData | null) => set({ currentPlayer: player }),
 
 	setMode: (mode: GameMode) => set({ mode }),
 	setPlayers: (players: PlayerData[]) => set({ players }),

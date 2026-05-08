@@ -24,7 +24,7 @@ export class GameEngine {
 		const activePlayers = gameState.players.filter((p) => !p.end);
 
 		if (activePlayers.length <= 1) {
-			// gameState.setCurrentPlayer({ name: "", end: true, score: {} });
+			// gameState.setCurrentPlayer(null);
 			// TODO : popup game over
 			// gameState.setGameStatus("end");
 			return;
@@ -71,16 +71,16 @@ export class GameEngine {
 			if (nextRemainingScore < 0) {
 				segment.bust = true;
 				gameState.setGameStatus("bust");
-				setTimeout(() => GameEngine.nextPlayer(), 1250);
+				setTimeout(() => GameEngine.nextPlayer(), 1000);
 			} else if (nextRemainingScore === 0) {
 				// end
 				p.end = true;
 				gameState.setGameStatus("finish");
-				setTimeout(() => GameEngine.nextPlayer(), 1250);
+				setTimeout(() => GameEngine.nextPlayer(), 1000);
 			} else if (playerScore.length === 3) {
 				// Shot 3
 				gameState.setGameStatus("wait");
-				setTimeout(() => GameEngine.nextPlayer(), 1250);
+				setTimeout(() => GameEngine.nextPlayer(), 1000);
 			}
 
 			return {
