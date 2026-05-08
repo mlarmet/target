@@ -1,31 +1,32 @@
 import { lazy, Suspense, useEffect } from "react";
-import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
-
-import Loading from "@/views/Loading/Loading";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 
 const Home = lazy(() => import("./views/Home/Home"));
 const Setup = lazy(() => import("./views/Setup/Setup"));
 const Game = lazy(() => import("./views/Game/Game"));
 
 import "./App.scss";
+import Loading from "./views/Loading/Loading";
 
 const App = () => {
 	useEffect(() => {
 		document.title = __APP_NAME__;
 	}, []);
 
+	const router = createBrowserRouter(
+		[
+			{ path: "/", element: <Home /> },
+			{ path: "/setup", element: <Setup /> },
+			{ path: "/game", element: <Game /> },
+			{ path: "*", element: <Navigate replace to="/" /> },
+		],
+		{ basename: __BASE_URL__ },
+	);
+
 	return (
-		<Router basename={__BASE_URL__}>
-			<Suspense fallback={<Loading />}>
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/setup" element={<Setup />} />
-					<Route path="/game" element={<Game />} />
-					{/* Fallback => go to home */}
-					<Route path="*" element={<Navigate replace to="/" />} />
-				</Routes>
-			</Suspense>
-		</Router>
+		<Suspense fallback={<Loading />}>
+			<RouterProvider router={router} />
+		</Suspense>
 	);
 };
 

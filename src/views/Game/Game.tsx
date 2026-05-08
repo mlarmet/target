@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useBlocker, useNavigate } from "react-router-dom";
 
 import { useGameStore } from "@/store/game.store";
 
@@ -26,7 +26,7 @@ import "./Game.scss";
 export default function Game() {
 	const navigation = useNavigate();
 
-	const { players, turn, currentPlayer } = useGameStore((state) => state);
+	const { players, turn, currentPlayer, status } = useGameStore((state) => state);
 
 	const [started, setStarted] = useState(false);
 
@@ -39,6 +39,10 @@ export default function Game() {
 		return 2;
 	};
 
+	useBlocker(() => {
+		return started && !confirm("Quitter la partie ?");
+	});
+
 	useEffect(() => {
 		if (players.length === 0) {
 			navigation("/setup");
@@ -49,6 +53,14 @@ export default function Game() {
 			GameEngine.init();
 			setStarted(true);
 		}
+
+		const handler = (e: BeforeUnloadEvent) => {
+			if (started) e.preventDefault();
+		};
+
+		window.addEventListener("beforeunload", handler);
+		return () => window.removeEventListener("beforeunload", handler);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	if (!started) return null;
@@ -64,7 +76,7 @@ export default function Game() {
 
 				<div id="left">
 					<div id="titles">
-						<h1 className="title main">{getPlayerRemainingScore(currentPlayer)}</h1>
+						<h1 className="title main">{getPlayerRemainingScore(currentPlayer?.name || "")}</h1>
 
 						<div id="counter" className="form-col">
 							<h2 className="title secondary">Shots {getCurrentPlayerShotsCount()}</h2>
@@ -81,7 +93,7 @@ export default function Game() {
 							</button>
 						</div>
 
-						<div id="turns" className="form-row">
+						<div id="turns" className={`form-row${status === "idle" ? "" : ` ${status}`}`}>
 							<div className={`title secondary turn-value${getShotIndex() === 0 ? " current" : ""}`}>{getShotText(0)}</div>
 							<div className={`title secondary turn-value${getShotIndex() === 1 ? " current" : ""}`}>{getShotText(1)}</div>
 							<div className={`title secondary turn-value${getShotIndex() === 2 ? " current" : ""}`}>{getShotText(2)}</div>
@@ -98,7 +110,7 @@ export default function Game() {
 							</div>
 							<div className="stat">
 								<p className="name">Avg.</p>
-								<h3 className="title main value">{getCurrentPlayerAverageShot()}</h3>
+								<h3 className="title main value">{(getCurrentPlayerAverageShot() || 0).toFixed(1)}</h3>
 							</div>
 							<div className="stat">
 								<p className="name">Best</p>
@@ -111,7 +123,7 @@ export default function Game() {
 						<h3 className="form-title">Joueurs</h3>
 						<div id="players-list" className="form-col">
 							{players.map((player, i) => (
-								<PlayerCard player={player} key={i} current={currentPlayer === player.name} />
+								<PlayerCard player={player} key={i} current={currentPlayer?.name === player.name} />
 							))}
 						</div>
 					</div>
