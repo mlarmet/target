@@ -4,6 +4,12 @@ type GameMode = 501 | 301;
 
 type GameStatus = "idle" | "wait";
 
+type GameSnapshot = {
+	players: PlayerData[];
+	currentPlayer: PlayerData | null;
+	turn: number;
+};
+
 type PlayerData = {
 	name: string;
 	score: Record<number, Segment[]>;
