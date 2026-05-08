@@ -15,12 +15,9 @@ export const getPlayerScore = (name: string) => {
 
 	let score = 0;
 	for (let i = 0; i < scoreLength; i++) {
-		const shots = player.score[i];
-		if (!shots) continue;
-
-		for (const shot of shots) {
-			score += shot.value * Math.floor(shot.multiplier); // Prevent 1.5 mult
-		}
+		if (player.score[i].some((s) => s.bust)) continue;
+		const shots = player.score[i].map((s) => s.value * Math.floor(s.multiplier));
+		score += shots.reduce((acc, shot) => acc + shot, 0);
 	}
 	return score;
 };
@@ -36,6 +33,7 @@ export const getCurrentPlayerLastShot = () => {
 	const key = useGameStore.getState().turn - 2;
 
 	if (!player.score[key]) return 0;
+	if (player.score[key].some((s) => s.bust)) return 0;
 
 	return player.score[key].reduce((acc, shot) => acc + shot.value * Math.floor(shot.multiplier), 0);
 };
@@ -44,22 +42,31 @@ export const getCurrentPlayerAverageShot = () => {
 	const player = getCurrentPlayer();
 	if (!player) return 0;
 
-	const total = getPlayerScore(player.name);
-	if (total <= 0) return 0;
+	const allScore = [];
+	for (let i = 0; i < Object.keys(player.score).length; i++) {
+		if (player.score[i].length === 0) continue;
 
-	const shots = getCurrentPlayerShotsCount();
-	if (shots <= 0) return 0;
+		if (player.score[i].some((s) => s.bust)) {
+			allScore.push(0);
+			continue;
+		}
 
-	return (total / shots).toFixed(1);
+		const shots = player.score[i].map((s) => s.value * Math.floor(s.multiplier));
+		allScore.push(shots.reduce((acc, shot) => acc + shot, 0));
+	}
+
+	if (!allScore.length) return 0;
+
+	return allScore.reduce((acc, shot) => acc + shot, 0) / allScore.length;
 };
 
 export const getCurrentPlayerBestShot = () => {
 	const player = getCurrentPlayer();
-
 	if (!player) return 0;
 
 	const allScore = [];
 	for (let i = 0; i < Object.keys(player.score).length; i++) {
+		if (player.score[i].some((s) => s.bust)) continue;
 		const shots = player.score[i].map((s) => s.value * Math.floor(s.multiplier));
 		allScore.push(shots.reduce((acc, shot) => acc + shot, 0));
 	}
@@ -71,7 +78,6 @@ export const getCurrentPlayerBestShot = () => {
 
 export const getCurrentPlayerShotsCount = () => {
 	const player = getCurrentPlayer();
-
 	if (!player) return 0;
 
 	let totalShot = 0;
@@ -92,21 +98,7 @@ export const getCurrentPlayerShots = () => {
 			2: null,
 		};
 
-	const key = useGameStore.getState().turn - 1;
-	const shots = player.score[key];
-
-	if (!shots)
-		return {
-			0: null,
-			1: null,
-			2: null,
-		};
-
-	return {
-		0: shots[0] || null,
-		1: shots[1] || null,
-		2: shots[2] || null,
-	};
+	return getPlayerShots(player.name);
 };
 
 export const getPlayerShots = (name: string) => {
@@ -143,7 +135,7 @@ export const getShotText = (count: number) => {
 	// No shot
 	if (!shot) return ".";
 	// Miss
-	if (shot.value === 0) return "-";
+	if (shot.value === 0) return "x";
 	// Bull
 	if (shot.value === 25) return shot.value * Math.floor(shot.multiplier);
 	// Triple

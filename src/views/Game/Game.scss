@@ -43,6 +43,21 @@ main#game {
 			.turn-value {
 				flex: 1;
 			}
+
+			&.bust {
+				.turn-value {
+					border-color: var(--color-others-danger) !important;
+					color: var(--color-others-danger) !important;
+				}
+			}
+
+			&.finish {
+				.turn-value {
+					background-color: var(--color-cta-default) !important;
+					color: var(--color-background-variant) !important;
+				}
+			}
+
 		}
 
 		#players,
