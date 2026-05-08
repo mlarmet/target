@@ -18,6 +18,6 @@
 	"display": "standalone",
 	"lang": "fr",
 	"scope": "/target/",
-	"theme_color": "#082046",
-	"background_color": "#082046"
+	"theme_color": "#2A5C3A",
+	"background_color": "#2A5C3A"
 }
