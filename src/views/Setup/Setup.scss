@@ -104,6 +104,11 @@ main#setup {
 		flex-direction: column;
 		gap: 36px;
 
+		#players-title {
+			width: 100%;
+			justify-content: space-between;
+		}
+
 		.title {
 			margin-bottom: 12px;
 		}

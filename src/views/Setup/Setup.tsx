@@ -15,12 +15,12 @@ interface PlayerError {
 	text: string;
 }
 
-const MAX_PLAYERS = 10;
 const GAME_MODES: GameMode[] = [501, 301];
 const NO_ERROR: PlayerError = { code: 0, text: "" };
 const NEW_PLAYER: PlayerData = { name: "", score: [] };
 
 export default function Setup() {
+	const [randomOrder, setRandomOrder] = useState(true);
 	const [showFullAlert, setShowFullAlert] = useState(false);
 
 	const navigate = useNavigate();
@@ -31,6 +31,15 @@ export default function Setup() {
 
 	const validateAll = (players: PlayerData[], prevErrors: PlayerError[]): PlayerError[] => {
 		return players.map((player, i) => validatePlayer(player.name, prevErrors[i]));
+	};
+
+	const shufflePlayers = (players: PlayerData[]) => {
+		const arr = [...players];
+		for (let i = arr.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[arr[i], arr[j]] = [arr[j], arr[i]];
+		}
+		return arr;
 	};
 
 	const validatePlayer = (name: string, prevError: PlayerError): PlayerError => {
@@ -104,6 +113,8 @@ export default function Setup() {
 		}
 		setErrors([]);
 
+		if (randomOrder) setPlayers(shufflePlayers(players));
+
 		// Start game
 		navigate("/game");
 	};
@@ -147,7 +158,23 @@ export default function Setup() {
 						</div>
 
 						<div className="form-container">
-							<h3 className="form-title">Joueurs</h3>
+							<div id="players-title" className="form-row">
+								<h3 className="form-title">Joueurs</h3>
+								<div id="random-order" className="form-row">
+									<input
+										type="checkbox"
+										id="random-order-input"
+										name="random-order"
+										className="input"
+										checked={randomOrder}
+										onChange={(e) => setRandomOrder(e.target.checked)}
+									/>
+									<label className="checkbox-label" htmlFor="random-order-input">
+										Aléatoire
+										<span className="box">{randomOrder && <span className="material-symbols-outlined icon">check</span>}</span>
+									</label>
+								</div>
+							</div>
 							<div id="players" className="form-col">
 								{players.map((player, i) => (
 									<React.Fragment key={i}>
