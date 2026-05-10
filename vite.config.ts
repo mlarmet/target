@@ -8,7 +8,7 @@ import { VitePWA } from "vite-plugin-pwa";
 const baseUrl = "/target";
 
 const build = {
-	version: "1.0.0",
+	version: "1.1.0",
 	date: new Date(),
 };
 
