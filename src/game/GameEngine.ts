@@ -20,25 +20,32 @@ export class GameEngine {
 
 	static nextPlayer() {
 		const gameState = useGameStore.getState();
+
 		const activePlayers = gameState.players.filter((p) => !p.end);
 
 		if (activePlayers.length <= 1) {
-			gameState.setCurrentPlayer({ name: "", end: true, score: {} });
+			// gameState.setCurrentPlayer({ name: "", end: true, score: {} });
 			// TODO : popup game over
-			gameState.setGameStatus("end");
+			// gameState.setGameStatus("end");
 			return;
 		}
 
-		const index = activePlayers.findIndex((p) => p.name === gameState.currentPlayer?.name);
-		const nextIndex = (index + 1) % activePlayers.length;
-		const nextPlayer = activePlayers[nextIndex];
+		const index = gameState.players.findIndex((p) => p.name === gameState.currentPlayer?.name);
+		if (index === -1) return;
 
-		// New turn = le next est "avant" le current dans l'ordre original
-		const currentOrigIndex = gameState.players.findIndex((p) => p.name === gameState.currentPlayer?.name);
-		const nextOrigIndex = gameState.players.findIndex((p) => p.name === nextPlayer.name);
-		if (nextOrigIndex < currentOrigIndex) gameState.setTurn(gameState.turn + 1);
+		const nextPlayer = gameState.players[(index + 1) % gameState.players.length];
+
+		// First player to play => new turn
+		if (nextPlayer.name === gameState.players[0].name) gameState.setTurn(gameState.turn + 1);
 
 		gameState.setCurrentPlayer(nextPlayer);
+
+		// While next player end, go next
+		if (nextPlayer.end) {
+			this.nextPlayer();
+			return;
+		}
+
 		gameState.setGameStatus("idle");
 	}
 
@@ -58,24 +65,20 @@ export class GameEngine {
 			const remainingScore = getPlayerRemainingScore(gameState.currentPlayer?.name);
 			const nextRemainingScore = remainingScore - segment.value * Math.floor(segment.multiplier);
 
+			playerScore.push(segment);
+
 			// bust
 			if (nextRemainingScore < 0) {
 				segment.bust = true;
 				gameState.setGameStatus("bust");
 				setTimeout(() => GameEngine.nextPlayer(), 1250);
-			}
-
-			// bust
-			if (nextRemainingScore === 0) {
+			} else if (nextRemainingScore === 0) {
+				// end
 				p.end = true;
 				gameState.setGameStatus("finish");
 				setTimeout(() => GameEngine.nextPlayer(), 1250);
-			}
-
-			playerScore.push(segment);
-
-			// Shot 3
-			if (playerScore.length === 3) {
+			} else if (playerScore.length === 3) {
+				// Shot 3
 				gameState.setGameStatus("wait");
 				setTimeout(() => GameEngine.nextPlayer(), 1250);
 			}
