@@ -10,6 +10,13 @@ export default function Header({ reverse }: HeaderProps) {
 			<h1 id="app-name" className="title main">
 				{__APP_NAME__}
 			</h1>
+
+			{window.location.pathname !== __BASE_URL__ && (
+				<button type="button" id="back-btn" className="btn tertiary" onClick={() => history.back()}>
+					<span className="material-symbols-outlined">arrow_left</span>
+					Retour
+				</button>
+			)}
 		</header>
 	);
 }

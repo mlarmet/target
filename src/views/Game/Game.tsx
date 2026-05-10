@@ -26,7 +26,7 @@ import "./Game.scss";
 export default function Game() {
 	const navigation = useNavigate();
 
-	const { players, turn, currentPlayer, status } = useGameStore((state) => state);
+	const { players, turn, currentPlayer, status, resetGame } = useGameStore((state) => state);
 
 	const [started, setStarted] = useState(false);
 
@@ -40,11 +40,16 @@ export default function Game() {
 	};
 
 	useBlocker(() => {
-		return started && !confirm("Quitter la partie ?");
+		if (!started) return false;
+		const exit = confirm("Quitter la partie ?");
+
+		if (exit) resetGame();
+
+		return !exit;
 	});
 
 	useEffect(() => {
-		if (players.length === 0) {
+		if (players.length === 0 || players.every((p) => p.name === "")) {
 			navigation("/setup");
 			return;
 		}
@@ -55,7 +60,10 @@ export default function Game() {
 		}
 
 		const handler = (e: BeforeUnloadEvent) => {
-			if (started) e.preventDefault();
+			if (started) {
+				e.preventDefault();
+				resetGame();
+			}
 		};
 
 		window.addEventListener("beforeunload", handler);

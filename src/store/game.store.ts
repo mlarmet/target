@@ -22,6 +22,8 @@ type GameState = {
 	setTurn: (turn: number) => void;
 
 	setGameStatus: (status: GameStatus) => void;
+
+	resetGame: () => void;
 };
 
 const NEW_PLAYER = { name: "", score: [] };
@@ -68,4 +70,17 @@ export const useGameStore = create<GameState>((set, get) => ({
 	setTurn: (turn: number) => set({ turn }),
 
 	setGameStatus: (status: GameStatus) => set({ status }),
+
+	resetGame: () => {
+		const { players } = get();
+
+		const resetPlayers = players.map((p) => ({ ...p, score: [] }));
+		set({
+			players: structuredClone(resetPlayers),
+			currentPlayer: null,
+			turn: 1,
+			status: "idle",
+			history: [],
+		});
+	},
 }));
