@@ -1,7 +1,7 @@
 import react from "@vitejs/plugin-react";
+import { resolve } from "path";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
-import { resolve } from "path";
 
 // https://vitejs.dev/config/
 
@@ -67,6 +67,6 @@ export default defineConfig({
 		__BASE_URL__: JSON.stringify(baseUrl),
 		__APP_NAME__: JSON.stringify("🎯 Target"),
 		__BUILD_INFOS__: JSON.stringify(build),
-		__MAX_LENGTH__: JSON.stringify({ name: 20 }),
+		__MAX_LENGTH__: JSON.stringify({ name: 18, players: 10 }),
 	},
 });

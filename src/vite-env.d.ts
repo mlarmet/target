@@ -10,4 +10,5 @@ declare const __BUILD_INFOS__: {
 
 declare const __MAX_LENGTH__: {
 	name: number;
+	players: number;
 };

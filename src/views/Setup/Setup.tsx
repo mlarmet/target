@@ -61,7 +61,14 @@ export default function Setup() {
 			return { code: -2, text: "Nom interdit" };
 		}
 
-		// TODO : same name
+		const occ: Record<string, number> = {};
+		for (const name of players.map((p) => p.name)) {
+			occ[name] = (occ[name] || 0) + 1;
+		}
+
+		if (occ[trimmed] > 1) {
+			return { code: -5, text: "Nom déjà utilisé" };
+		}
 
 		return NO_ERROR;
 	};
@@ -207,7 +214,7 @@ export default function Setup() {
 										)}
 									</React.Fragment>
 								))}
-								{players.length < MAX_PLAYERS && (
+								{players.length < __MAX_LENGTH__.players && (
 									<button type="button" className="btn secondary" onClick={addPlayer}>
 										<span className="material-symbols-outlined">add</span> Ajouter un joueur
 									</button>
