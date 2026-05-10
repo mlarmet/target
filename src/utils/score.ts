@@ -15,7 +15,9 @@ export const getPlayerScore = (name: string) => {
 
 	let score = 0;
 	for (let i = 0; i < scoreLength; i++) {
+		if (!player.score[i] || player.score[i].length === 0) continue;
 		if (player.score[i].some((s) => s.bust)) continue;
+
 		const shots = player.score[i].map((s) => s.value * Math.floor(s.multiplier));
 		score += shots.reduce((acc, shot) => acc + shot, 0);
 	}
@@ -44,7 +46,7 @@ export const getCurrentPlayerAverageShot = () => {
 
 	const allScore = [];
 	for (let i = 0; i < Object.keys(player.score).length; i++) {
-		if (player.score[i].length === 0) continue;
+		if (!player.score[i] || player.score[i].length === 0) continue;
 
 		if (player.score[i].some((s) => s.bust)) {
 			allScore.push(0);
@@ -66,7 +68,9 @@ export const getCurrentPlayerBestShot = () => {
 
 	const allScore = [];
 	for (let i = 0; i < Object.keys(player.score).length; i++) {
+		if (!player.score[i] || player.score[i].length === 0) continue;
 		if (player.score[i].some((s) => s.bust)) continue;
+
 		const shots = player.score[i].map((s) => s.value * Math.floor(s.multiplier));
 		allScore.push(shots.reduce((acc, shot) => acc + shot, 0));
 	}
@@ -82,7 +86,7 @@ export const getCurrentPlayerShotsCount = () => {
 
 	let totalShot = 0;
 	for (let i = 0; i < Object.keys(player.score).length; i++) {
-		totalShot += player.score[i].length;
+		totalShot += player.score[i]?.length || 0;
 	}
 
 	return totalShot;
