@@ -59,6 +59,7 @@ body {
 }
 
 #root {
+	position: relative;
 	flex: 1;
 
 	max-width: variables.$ipad-width;
@@ -193,6 +194,14 @@ button.btn {
 		}
 	}
 
+	&:hover:not(:disabled) {
+		background-color: var(--color-cta-hover);
+	}
+
+	&:active:not(:disabled) {
+		background-color: var(--color-cta-pressed);
+	}
+
 	&.danger {
 		padding: 0;
 		background-color: transparent;
@@ -204,14 +213,6 @@ button.btn {
 			background-color: var(--color-others-danger);
 			color: var(--color-text-cta);
 		}
-	}
-
-	&:hover:not(:disabled) {
-		background-color: var(--color-cta-hover);
-	}
-
-	&:active:not(:disabled) {
-		background-color: var(--color-cta-pressed);
 	}
 
 	&.icon {
@@ -318,7 +319,7 @@ input.input {
 .turn-value {
 	text-align: center;
 
-	padding: 18px;
+	padding: 16px;
 
 	border: 1px solid var(--color-others-border);
 	border-radius: 8px;

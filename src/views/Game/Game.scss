@@ -5,20 +5,18 @@ main#game {
 
 	background: linear-gradient(var(--color-background-default) 0%, var(--color-background-variant) 100%);
 
-	gap: 48px;
-
 	#left {
 		flex: 1;
 
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
-		gap: 36px;
+		gap: 30px;
 
 		height: 100%;
 
-		padding: 64px 48px;
-		max-width: 455px;
+		padding: 48px 24px;
+		max-width: 375px;
 
 		#titles {
 			display: flex;
@@ -28,15 +26,15 @@ main#game {
 				margin-top: -15px;
 			}
 
+			#actions {
+				align-items: flex-start;
+				gap: 24px;
+			}
+
 			#counter {
 				align-items: flex-end;
 				gap: 6px;
 			}
-		}
-
-		#turns-title {
-			align-items: flex-start;
-			justify-content: space-between;
 		}
 
 		#turns {
@@ -78,8 +76,7 @@ main#game {
 		justify-content: center;
 		align-items: center;
 
-		max-width: 650px;
-		max-height: 650px;
+		padding: 12px 0 12px 12px;
 
 		height: 100%;
 

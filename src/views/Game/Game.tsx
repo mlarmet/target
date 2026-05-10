@@ -79,27 +79,25 @@ export default function Game() {
 			<main id="game">
 				<div id="right">
 					<DartBoardComp />
-					{/* <img id="decoration" src={dartboard} alt="decoration" />*/}
 				</div>
 
 				<div id="left">
 					<div id="titles">
 						<h1 className="title main">{getPlayerRemainingScore(currentPlayer?.name || "")}</h1>
+						<div id="actions" className="form-row">
+							<button type="button" id="undo-btn" className="btn danger icon" onClick={() => GameEngine.undoShot()}>
+								<span className="material-symbols-outlined">undo</span>
+							</button>
 
-						<div id="counter" className="form-col">
-							<h2 className="title secondary">Shots {getCurrentPlayerShotsCount()}</h2>
-							<p>Tour {turn}</p>
+							<div id="counter" className="form-col">
+								<h2 className="title secondary">Shots {getCurrentPlayerShotsCount()}</h2>
+								<p>Tour {turn}</p>
+							</div>
 						</div>
 					</div>
 
 					<div className="form-container">
-						<div id="turns-title" className="form-row">
-							<h3 className="form-title">Tours</h3>
-
-							<button type="button" className="btn danger icon" onClick={() => GameEngine.undoShot()}>
-								<span className="material-symbols-outlined">undo</span>
-							</button>
-						</div>
+						<h3 className="form-title">Tours</h3>
 
 						<div id="turns" className={`form-row${status === "idle" ? "" : ` ${status}`}`}>
 							<div className={`title secondary turn-value${getShotIndex() === 0 ? " current" : ""}`}>{getShotText(0)}</div>

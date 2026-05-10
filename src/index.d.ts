@@ -1,6 +1,6 @@
 type TileColor = "red" | "green" | "white" | "black" | "selected" | "text";
 
-type GameMode = 501 | 301;
+type GameMode = 501 | 301 | 201;
 
 type GameStatus = "idle" | "wait" | "bust" | "finish" | "end";
 

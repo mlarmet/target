@@ -61,10 +61,9 @@ main#setup {
 		height: 100%;
 
 		max-width: 455px;
-		padding: 64px 48px 0 48px;
+		padding: 64px 48px;
 
 		width: 100%;
-
 
 		@media screen and (max-width: 1050px) {
 			padding: 36px 24px 18px 24px;
@@ -98,7 +97,7 @@ main#setup {
 
 	form {
 		min-height: 0;
-		overflow-y: auto;
+		overflow: hidden auto;
 
 		display: flex;
 		flex-direction: column;

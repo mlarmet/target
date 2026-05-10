@@ -15,7 +15,7 @@ interface PlayerError {
 	text: string;
 }
 
-const GAME_MODES: GameMode[] = [501, 301];
+const GAME_MODES: GameMode[] = [501, 301, 201];
 const NO_ERROR: PlayerError = { code: 0, text: "" };
 const NEW_PLAYER: PlayerData = { name: "", score: [] };
 
