@@ -8,7 +8,7 @@ import { VitePWA } from "vite-plugin-pwa";
 const baseUrl = "/target";
 
 const build = {
-	version: "1.1.0",
+	version: "1.2.1",
 	date: new Date(),
 };
 
@@ -67,6 +67,6 @@ export default defineConfig({
 		__BASE_URL__: JSON.stringify(baseUrl),
 		__APP_NAME__: JSON.stringify("🎯 Target"),
 		__BUILD_INFOS__: JSON.stringify(build),
-		__MAX_LENGTH__: JSON.stringify({ name: 18, players: 10 }),
+		__MAX_LENGTH__: JSON.stringify({ name: 15, players: 10 }),
 	},
 });
