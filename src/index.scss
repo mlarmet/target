@@ -216,7 +216,7 @@ button.btn {
 		height: 38px;
 	}
 
-	&:not(.icon) > span {
+	&:not(.icon)>span {
 		line-height: 11px;
 		margin-right: 6px;
 	}
@@ -237,7 +237,7 @@ input.input {
 	font-weight: 700;
 
 	&,
-	& + label {
+	&+label {
 		transition: all 250ms ease-in-out;
 	}
 
@@ -248,12 +248,12 @@ input.input {
 	}
 
 	&[type="checkbox"] {
-		&:checked + label .box {
+		&:checked+label .box {
 			background-color: var(--color-cta-default);
 			border-color: var(--color-cta-default);
 		}
 
-		& + label {
+		&+label {
 			display: flex;
 			align-items: center;
 			gap: 12px;
@@ -279,7 +279,7 @@ input.input {
 	}
 
 	&:not([type="radio"]),
-	&:not([type="checkbox"]) + label {
+	&:not([type="checkbox"])+label {
 		// line height not works
 		padding: 10px 12px;
 		border: 1px solid var(--color-others-border);
@@ -288,18 +288,18 @@ input.input {
 		color: var(--color-text-primary);
 	}
 
-	& + label {
+	&+label {
 		text-align: center;
 		cursor: pointer;
 	}
 
-	&[type="radio"]:checked + label,
+	&[type="radio"]:checked+label,
 	&:hover,
 	&:focus {
 		border-color: var(--color-cta-default);
 	}
 
-	&[type="radio"]:checked + label,
+	&[type="radio"]:checked+label,
 	&:focus {
 		font-weight: 700;
 		color: var(--color-cta-default);
@@ -372,8 +372,8 @@ input.input {
 .form-row {
 	align-items: center;
 
-	& > input,
-	& > label {
+	&>input,
+	&>label {
 		flex: 1;
 	}
 }
@@ -390,4 +390,39 @@ input.input {
 	padding: 24px;
 
 	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.player-pos {
+	cursor: pointer;
+	position: relative;
+
+	border-radius: 8px;
+	width: 36px;
+	height: 36px;
+
+	&.small {
+		border-radius: 6px;
+		width: 24px;
+		height: 30px;
+	}
+
+	&[data-endpos="1"] {
+		background-color: rgb(199, 183, 13);
+	}
+
+	&[data-endpos="2"] {
+		background-color: rgb(132, 132, 129);
+	}
+
+	&[data-endpos="3"] {
+		background-color: rgb(169, 98, 12);
+	}
+
+	.title {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: var(--color-text-primary) !important;
+	}
 }

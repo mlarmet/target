@@ -1,0 +1,25 @@
+#end {
+	#end-content {
+		display: flex;
+		flex-direction: column;
+		gap: 48px;
+
+		padding: 36px;
+
+		border: 1px solid var(--color-others-border);
+		border-radius: 8px;
+		background-color: var(--color-background-variant);
+
+		#players-top {
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+
+			.player-top-row {
+				display: flex;
+				align-items: center;
+				gap: 16px;
+			}
+		}
+	}
+}

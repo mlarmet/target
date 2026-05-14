@@ -21,12 +21,10 @@ export class GameEngine {
 	static nextPlayer() {
 		const gameState = useGameStore.getState();
 
-		const activePlayers = gameState.players.filter((p) => !p.end);
+		const activePlayers = gameState.players.filter((p) => p.endPos === 0);
 
 		if (activePlayers.length <= 1) {
-			// gameState.setCurrentPlayer(null);
-			// TODO : popup game over
-			// gameState.setGameStatus("end");
+			gameState.setGameStatus("end");
 			return;
 		}
 
@@ -41,7 +39,7 @@ export class GameEngine {
 		gameState.setCurrentPlayer(nextPlayer);
 
 		// While next player end, go next
-		if (nextPlayer.end) {
+		if (nextPlayer.endPos) {
 			this.nextPlayer();
 			return;
 		}
@@ -74,7 +72,9 @@ export class GameEngine {
 				setTimeout(() => GameEngine.nextPlayer(), 1000);
 			} else if (nextRemainingScore === 0) {
 				// end
-				p.end = true;
+				const activePlayers = gameState.players.filter((p) => p.endPos === 0);
+				p.endPos = gameState.players.length - activePlayers.length + 1;
+
 				gameState.setGameStatus("finish");
 				setTimeout(() => GameEngine.nextPlayer(), 1000);
 			} else if (playerScore.length === 3) {

@@ -1,5 +1,5 @@
 .player-card {
-	padding: 7px 24px 7px 18px;
+	padding: 6px 18px 6px 12px;
 
 	border: 1px solid var(--color-others-border);
 	border-radius: 8px;
@@ -9,16 +9,11 @@
 	display: grid;
 	align-items: center;
 	grid-template-rows: 1fr;
-	grid-template-columns: 1fr auto auto;
+	grid-template-columns: 30px 1fr auto 36px;
 
-	gap: 16px;
+	gap: 12px;
 
-	.name {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-	}
-
+	.circle,
 	.btn {
 		justify-self: center;
 	}
@@ -35,11 +30,7 @@
 	}
 
 	.player-score {
-		width: 41px;
-	}
-
-	&.end {
-		opacity: 0.5;
+		font-size: 20px;
 	}
 
 	&.current {

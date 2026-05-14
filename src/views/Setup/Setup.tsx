@@ -17,7 +17,7 @@ interface PlayerError {
 
 const GAME_MODES: GameMode[] = [501, 301, 201];
 const NO_ERROR: PlayerError = { code: 0, text: "" };
-const NEW_PLAYER: PlayerData = { name: "", score: [] };
+const NEW_PLAYER: PlayerData = { name: "", score: [], endPos: 0 };
 
 export default function Setup() {
 	const [randomOrder, setRandomOrder] = useState(true);

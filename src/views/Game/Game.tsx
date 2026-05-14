@@ -1,10 +1,11 @@
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, LineElement, PointElement, Tooltip } from "chart.js";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useBlocker, useNavigate } from "react-router-dom";
 
 import { useGameStore } from "@/store/game.store";
 
 import DartBoardComp from "@/components/DartBoard/DartBoardComp";
+import End from "@/components/End/End";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import PlayerCard from "@/components/PlayerCard/PlayerCard";
@@ -20,9 +21,7 @@ import "./Game.scss";
 export default function Game() {
 	const navigation = useNavigate();
 
-	const { players, turn, currentPlayer, status, resetGame } = useGameStore((state) => state);
-
-	const [started, setStarted] = useState(false);
+	const { players, turn, currentPlayer, status, started, setStarted, resetGame } = useGameStore((state) => state);
 
 	const getShotIndex = () => {
 		const shots: Record<number, Segment | null> = getPlayerShots(currentPlayer?.name);
@@ -33,8 +32,21 @@ export default function Game() {
 		return 2;
 	};
 
+	const handler = useMemo(
+		() => (e: BeforeUnloadEvent) => {
+			if (started && status !== "end") e.preventDefault();
+		},
+
+		[started, status],
+	);
+
+	useEffect(() => {
+		window.addEventListener("beforeunload", handler);
+		return () => window.removeEventListener("beforeunload", handler);
+	}, [handler]);
+
 	useBlocker(() => {
-		if (!started) return false;
+		if (!started || status == "end") return false;
 		const exit = confirm("Quitter la partie ?");
 
 		if (exit) resetGame();
@@ -63,15 +75,6 @@ export default function Game() {
 			Legend,
 		);
 
-		const handler = (e: BeforeUnloadEvent) => {
-			if (started) {
-				e.preventDefault();
-				resetGame();
-			}
-		};
-
-		window.addEventListener("beforeunload", handler);
-		return () => window.removeEventListener("beforeunload", handler);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -79,6 +82,7 @@ export default function Game() {
 
 	return (
 		<>
+			{status === "end" && <End />}
 			<Stats />
 			<Header reverse />
 			<main id="game">

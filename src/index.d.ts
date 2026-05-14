@@ -12,7 +12,7 @@ type GameSnapshot = {
 
 type PlayerData = {
 	name: string;
-	end?: boolean;
+	endPos: number;
 	score: Record<number, Segment[]>;
 };
 

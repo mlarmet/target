@@ -4,6 +4,8 @@ type GameState = {
 	mode: GameMode;
 	players: PlayerData[];
 
+	started: boolean;
+
 	turn: number;
 
 	status: GameStatus;
@@ -14,6 +16,8 @@ type GameState = {
 	history: GameSnapshot[];
 	pushHistory: () => void;
 	undo: () => void;
+
+	setStarted: (started: boolean) => void;
 
 	setCurrentPlayer: (player: PlayerData | null) => void;
 	showPlayerDetails: (player: PlayerData | null) => void;
@@ -28,7 +32,7 @@ type GameState = {
 	resetGame: () => void;
 };
 
-const NEW_PLAYER = { name: "", score: [] };
+const NEW_PLAYER = { name: "", score: [], endPos: 0 };
 
 const defaultPlayers = [NEW_PLAYER, NEW_PLAYER];
 
@@ -36,12 +40,16 @@ export const useGameStore = create<GameState>((set, get) => ({
 	mode: 501,
 	players: structuredClone(defaultPlayers),
 
+	started: false,
+
 	turn: 1,
 
 	status: "idle",
 
 	playerDetails: null,
 	currentPlayer: null,
+
+	setStarted: (started: boolean) => set({ started }),
 
 	history: [],
 	pushHistory: () => {
@@ -79,13 +87,14 @@ export const useGameStore = create<GameState>((set, get) => ({
 	resetGame: () => {
 		const { players } = get();
 
-		const resetPlayers = players.map((p) => ({ ...p, score: [] }));
+		const resetPlayers = players.map((p) => ({ ...p, score: [], endPos: 0 }));
 		set({
 			players: structuredClone(resetPlayers),
 			currentPlayer: null,
 			turn: 1,
 			status: "idle",
 			history: [],
+			started: false,
 		});
 	},
 }));
