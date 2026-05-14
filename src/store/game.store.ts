@@ -32,7 +32,7 @@ type GameState = {
 	resetGame: () => void;
 };
 
-const NEW_PLAYER = { name: "", score: [], endPos: 0 };
+const NEW_PLAYER = { name: "", score: [], endPos: 0, startOrder: 0 };
 
 const defaultPlayers = [NEW_PLAYER, NEW_PLAYER];
 
@@ -87,7 +87,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 	resetGame: () => {
 		const { players } = get();
 
-		const resetPlayers = players.map((p) => ({ ...p, score: [], endPos: 0 }));
+		const resetPlayers = players.sort((a, b) => a.startOrder - b.startOrder).map((p, index) => ({ ...p, score: [], endPos: 0, startOrder: index }));
 		set({
 			players: structuredClone(resetPlayers),
 			currentPlayer: null,

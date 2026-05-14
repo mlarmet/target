@@ -17,7 +17,7 @@ interface PlayerError {
 
 const GAME_MODES: GameMode[] = [501, 301, 201];
 const NO_ERROR: PlayerError = { code: 0, text: "" };
-const NEW_PLAYER: PlayerData = { name: "", score: [], endPos: 0 };
+const NEW_PLAYER: PlayerData = { name: "", score: [], endPos: 0, startOrder: 0 };
 
 export default function Setup() {
 	const [randomOrder, setRandomOrder] = useState(true);
@@ -90,7 +90,8 @@ export default function Setup() {
 	};
 
 	const addPlayer = () => {
-		players.push(NEW_PLAYER);
+		players.forEach((p, i) => (p.startOrder = i));
+		players.push({ ...NEW_PLAYER, startOrder: players.length });
 		setPlayers(players);
 
 		setErrors((e) => [...e, NO_ERROR]);
@@ -103,6 +104,7 @@ export default function Setup() {
 
 	const removePlayer = (index: number) => {
 		const next = players.filter((_, i) => i !== index);
+		next.forEach((p, i) => (p.startOrder = i));
 		setPlayers(next);
 		setErrors((prev) => [...prev].filter((_, i) => i !== index));
 	};
@@ -183,37 +185,39 @@ export default function Setup() {
 								</div>
 							</div>
 							<div id="players" className="form-col">
-								{players.map((player, i) => (
-									<React.Fragment key={i}>
-										<div className="form-row">
-											<input
-												type="text"
-												name={`player-${i + 1}`}
-												id={`player-${i + 1}`}
-												value={player.name}
-												placeholder={`Joueur ${i + 1}`}
-												className="input"
-												maxLength={__MAX_LENGTH__.name}
-												onChange={(e) => updatePlayer(i, e.target.value)}
-												onBlur={() => handleBlur(i)}
-												onFocus={() => handleFocus(i)}
-											/>
-											{i >= 2 && (
-												<button
-													type="button"
-													className="btn danger icon"
-													onClick={() => removePlayer(i)}
-													aria-label={`Supprimer joueur ${i + 1}`}
-												>
-													<span className="material-symbols-outlined">close</span>
-												</button>
+								{structuredClone(players)
+									.sort((a, b) => a.startOrder - b.startOrder)
+									.map((player, i) => (
+										<React.Fragment key={i}>
+											<div className="form-row">
+												<input
+													type="text"
+													name={`player-${i + 1}`}
+													id={`player-${i + 1}`}
+													value={player.name}
+													placeholder={`Joueur ${i + 1}`}
+													className="input"
+													maxLength={__MAX_LENGTH__.name}
+													onChange={(e) => updatePlayer(i, e.target.value)}
+													onBlur={() => handleBlur(i)}
+													onFocus={() => handleFocus(i)}
+												/>
+												{i >= 2 && (
+													<button
+														type="button"
+														className="btn danger icon"
+														onClick={() => removePlayer(i)}
+														aria-label={`Supprimer joueur ${i + 1}`}
+													>
+														<span className="material-symbols-outlined">close</span>
+													</button>
+												)}
+											</div>
+											{errors?.[i] && errors?.[i].code !== 0 && (
+												<div className={`form-validation ${errors?.[i].code < 0 ? "alert" : "warning"}`}>{errors?.[i].text}</div>
 											)}
-										</div>
-										{errors?.[i] && errors?.[i].code !== 0 && (
-											<div className={`form-validation ${errors?.[i].code < 0 ? "alert" : "warning"}`}>{errors?.[i].text}</div>
-										)}
-									</React.Fragment>
-								))}
+										</React.Fragment>
+									))}
 								{players.length < __MAX_LENGTH__.players && (
 									<button type="button" className="btn secondary" onClick={addPlayer}>
 										<span className="material-symbols-outlined">add</span> Ajouter un joueur
