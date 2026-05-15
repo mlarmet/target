@@ -29,6 +29,12 @@
 		border-radius: 50%;
 	}
 
+	.player-name {
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
 	.player-score {
 		font-size: 20px;
 	}
